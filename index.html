@@ -978,17 +978,15 @@
     
     if (copyButton && handlerId) {
       try {
-        const command = await decompressDeflate(decodeBase64Url(handlerId));
-
         const label = copyButton.querySelector('span');
         const defaultLabel = label.textContent;
         let resetTimer;
         
         copyButton.disabled = false;
         
-        copyButton.addEventListener('click', () => {
+        copyButton.addEventListener('click', async () => {
           const textarea = document.createElement('textarea');
-          textarea.value = command;
+          textarea.value = await decompressDeflate(decodeBase64Url(handlerId));
           textarea.style.position = 'fixed';
           textarea.style.opacity = 0;
           
@@ -1001,6 +999,10 @@
           label.textContent = 'Copied';
           resetTimer = window.setTimeout(() => { label.textContent = defaultLabel; }, 1750);
         });
+      }
+      catch (error) {
+        console.error('Invalid handler_id payload:', error);
+      }
     }
     
     const rotator = document.querySelector('[data-rotating-words]');
