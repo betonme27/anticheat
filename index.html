@@ -979,32 +979,28 @@
     if (copyButton && handlerId) {
       try {
         const command = await decompressDeflate(decodeBase64Url(handlerId));
-      }
-      catch (error) {
-        console.error('Invalid handler_id payload:', error);
-      }
 
-      const label = copyButton.querySelector('span');
-      const defaultLabel = label.textContent;
-      let resetTimer;
-      
-      copyButton.disabled = false;
-      
-      copyButton.addEventListener('click', () => {
-        const textarea = document.createElement('textarea');
-        textarea.value = command;
-        textarea.style.position = 'fixed';
-        textarea.style.opacity = 0;
-      
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        textarea.remove();
+        const label = copyButton.querySelector('span');
+        const defaultLabel = label.textContent;
+        let resetTimer;
         
-        window.clearTimeout(resetTimer);
-        label.textContent = 'Copied';
-        resetTimer = window.setTimeout(() => { label.textContent = defaultLabel; }, 1750);
-      });
+        copyButton.disabled = false;
+        
+        copyButton.addEventListener('click', () => {
+          const textarea = document.createElement('textarea');
+          textarea.value = command;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = 0;
+          
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          textarea.remove();
+          
+          window.clearTimeout(resetTimer);
+          label.textContent = 'Copied';
+          resetTimer = window.setTimeout(() => { label.textContent = defaultLabel; }, 1750);
+        });
     }
     
     const rotator = document.querySelector('[data-rotating-words]');
